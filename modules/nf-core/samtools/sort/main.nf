@@ -12,8 +12,8 @@ process SAMTOOLS_SORT {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("${prefix}.bam"),  emit: bam,  optional: true
+    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
     tuple val(meta), path("*.crai"), emit: crai, optional: true
     tuple val(meta), path("*.csi"),  emit: csi,  optional: true
     path  "versions.yml",            emit: versions
@@ -23,7 +23,7 @@ process SAMTOOLS_SORT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     "bam"
@@ -50,7 +50,7 @@ process SAMTOOLS_SORT {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     "bam"
